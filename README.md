@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
+## Запуск
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker-compose up --build
+```
+→ http://localhost:3000/profile
+``
+Сделайте рефреш страницы на всякий :)
+``
+
+### 📁 Структура (FSD)
+```
+src/
+├── entities/user/     # Слайс стейта юзера
+├── features/          
+├── pages/profile/     # Страница профиля и её компоненты
+├── shared/            # baseApi - апи в который инджектятся эндпоинты user-a, общий UI
+└── widgets/           # Виджеты (navigation, footer)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Оптимизации
+- **Lazy loading** - `lazy()` + `Suspense` 
+- **Skeleton loading** - для UI состояний
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+В большинстве стейт не менялся поэтому и не нужно было ничего мемоизировать.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Дополнительно
+- **MSW** для мока API `/profile/:id`
+- **Responsive design** - `mobile first` с помощью тайлвинда
+- **Zod validation** для type safety
 
-## Learn More
+### Mock Service Worker (MSW API)
+- Возвращает данные пользователя по `GET https://msw/profile/:id`. 
+- `src/shared/api/msw/` **сетап воркера**
+- `src/entities/user/api/msw/` **эндпоинт узера (route)**
+- Включается через **.env** - `NEXT_PUBLIC_ENABLE_MSW=true`
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+**Стек**: *Next.js, React + Typescript, Tailwind, Redux Toolkit, RTK Query, Feature-Sliced Design*.
